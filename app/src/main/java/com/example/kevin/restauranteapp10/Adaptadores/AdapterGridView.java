@@ -21,30 +21,6 @@ import java.util.ArrayList;
 
 public class AdapterGridView extends BaseAdapter {
 
-    /*private static final String[] CONTENT = new String[]{
-            "Justin Bieber", "AlRight", "Big Sean", "Britney Spears", "Hilary", "Micheal Buble",
-            "Justin Bieber", "AlRight", "Big Sean",
-            "Britney Spears", "Hilary", "Micheal Buble", "Britney Spears", "Hilary", "Micheal Buble",
-            "Justin Bieber", "AlRight", "Big Sean", "Britney Spears", "Hilary", "Micheal Buble",
-            "Justin Bieber", "AlRight", "Big Sean", "Britney Spears", "Hilary", "Micheal Buble",
-            "Justin Bieber", "AlRight", "Big Sean", "Britney Spears", "Hilary", "Micheal Buble", "Britney Spears",
-            "Hilary", "Micheal Buble", "Justin Bieber", "AlRight", "Big Sean", "Britney Spears", "Hilary",
-            "Micheal Buble"};
-    private static final int[] ICONS = new int[]{
-            R.drawable.cover_justin,
-            R.drawable.cover_alright, R.drawable.cover_big_sean, R.drawable.cover_britney, R.drawable.cover_hilary,
-            R.drawable.cover_mb, R.drawable.cover_justin, R.drawable.cover_alright,
-            R.drawable.cover_big_sean, R.drawable.cover_britney, R.drawable.cover_hilary, R.drawable.cover_mb,
-            R.drawable.cover_britney, R.drawable.cover_hilary, R.drawable.cover_mb,
-            R.drawable.cover_justin, R.drawable.cover_alright, R.drawable.cover_big_sean, R.drawable.cover_britney,
-            R.drawable.cover_hilary, R.drawable.cover_mb, R.drawable.cover_justin,
-            R.drawable.cover_alright, R.drawable.cover_big_sean, R.drawable.cover_britney, R.drawable.cover_hilary,
-            R.drawable.cover_mb, R.drawable.cover_justin, R.drawable.cover_alright,
-            R.drawable.cover_big_sean, R.drawable.cover_britney, R.drawable.cover_hilary, R.drawable.cover_mb,
-            R.drawable.cover_britney, R.drawable.cover_hilary, R.drawable.cover_mb,
-            R.drawable.cover_justin, R.drawable.cover_alright, R.drawable.cover_big_sean, R.drawable.cover_britney,
-            R.drawable.cover_hilary, R.drawable.cover_mb};*/
-
    ArrayList<Integer> arrayImagenes= new ArrayList<Integer>();
     ArrayList<String> arrayTitulos= new ArrayList<String>();
 
@@ -102,17 +78,17 @@ public class AdapterGridView extends BaseAdapter {
             view.setTag(R.id.imagen, view.findViewById(R.id.imagen));
             view.setTag(R.id.title, view.findViewById(R.id.title));
         }
-        ImageView cover = (ImageView) view.findViewById(R.id.imagen);
+        ImageView imageView = (ImageView) view.findViewById(R.id.imagen);
         TextView title = (TextView) view.findViewById(R.id.title);
 
-        cover.setLayoutParams(mImageViewLayoutParams);
+        imageView.setLayoutParams(mImageViewLayoutParams);
 
         // Check the height matches our calculated column width
-        if (cover.getLayoutParams().height != mItemHeight) {
-            cover.setLayoutParams(mImageViewLayoutParams);
+        if (imageView.getLayoutParams().height != mItemHeight) {
+            imageView.setLayoutParams(mImageViewLayoutParams);
         }
 
-        cover.setImageResource(arrayImagenes.get(position));
+        imageView.setImageResource(arrayImagenes.get(position));
         title.setText(arrayTitulos.get(position));
 
         return view;

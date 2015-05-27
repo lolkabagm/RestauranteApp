@@ -13,7 +13,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.kevin.restauranteapp10.Adaptadores.AdapterGridView;
-import com.example.kevin.restauranteapp10.MainActivity2Activity;
+import com.example.kevin.restauranteapp10.Activitys_NavDrawer.MainActivity2Activity;
 import com.example.kevin.restauranteapp10.R;
 
 import java.util.ArrayList;
@@ -56,6 +56,7 @@ public class Fragment_1 extends Fragment implements AdapterView.OnItemClickListe
         getArrayListTitulos().add("Arroz Crijiente");
         getArrayListTitulos().add("Arroz Liquido");
         getArrayListTitulos().add("Arroz Turco");
+        getArrayListTitulos().add("Arroz Turco2");
 
 
 
@@ -100,12 +101,9 @@ public class Fragment_1 extends Fragment implements AdapterView.OnItemClickListe
         return rootView;
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Toast.makeText(getActivity(), "Has pulsado la posicion: " + position + parent.toString(),
-                Toast.LENGTH_SHORT).show();
 
         Intent i = new Intent(getActivity(), MainActivity2Activity.class);
         // passing array index

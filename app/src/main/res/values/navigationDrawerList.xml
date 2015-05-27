@@ -4,8 +4,7 @@
         <item>Perfil</item>
         <item>Favoritos</item>
         <item>Eventos</item>
-        <item>Lugares</item>
-        <item>Etiquetas</item>
+        <item>Localización</item>
         <item>Configuración</item>
         <item>Compartir</item>
     </string-array>
@@ -15,7 +14,6 @@
         <item>@drawable/ic_action_star</item>
         <item>@drawable/ic_action_event</item>
         <item>@drawable/ic_action_place</item>
-        <item>@drawable/ic_action_labels</item>
         <item>@drawable/ic_action_settings</item>
         <item>@drawable/ic_action_share</item>
     </array>

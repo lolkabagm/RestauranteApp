@@ -18,25 +18,23 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-
-import android.support.v7.widget.SearchView;
-
+import com.example.kevin.restauranteapp10.Activitys_NavDrawer.MainActivity2Activity;
 import com.example.kevin.restauranteapp10.Adaptadores.AdapterViewPager;
 import com.example.kevin.restauranteapp10.Adaptadores.NavigationAdapter;
-
+import com.example.kevin.restauranteapp10.BDatos.BaseDatosHelper;
 import com.example.kevin.restauranteapp10.Fragments_Tabs.Item_Nav;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.example.kevin.restauranteapp10.R.drawable.ic_action_drawer;
 import static com.example.kevin.restauranteapp10.R.id.contenedorPrincipal;
 
 
@@ -77,13 +75,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         actionBarActivity = getSupportActionBar();
-
-
-
-
-
 
         /*
             CONFIGURACION DEL NAVIGATION DRAWER
@@ -99,12 +91,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         drawerLayout = (DrawerLayout) findViewById(contenedorPrincipal);
         listView = (ListView) findViewById(R.id.menuIzq);
         actionBarActivity.setIcon(R.drawable.ic_app);
+        //actionBarActivity.setHomeAsUpIndicator(R.drawable.ic_action_drawer);
+        actionBarActivity.setDisplayHomeAsUpEnabled(true);
+        actionBarActivity.setHomeButtonEnabled(true);
+
+
 
         //Declaramos el header el caul sera el layout de header.xml
         View header = getLayoutInflater().inflate(R.layout.header, null);
         //Establecemos header
         listView.addHeaderView(header);
-
         //Tomamos listado  de imgs desde drawable
         NavIcons = getResources().obtainTypedArray(R.array.iconosNav);
 
@@ -133,17 +129,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
                 Fragment fragment = null;
                 Intent intent;
-                String dir = "Ctra. Níjar-San José, 22";
+
                 actionBarActivity.setSubtitle("");
 
                 switch (position) {
 
                     case 1:
 
-                       intent= new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + dir));
-                        //lanzar el intent
-                        startActivity(intent);
-                        break;
 
                  case 2:
                        intent = new Intent(MainActivity.this, MainActivity2Activity.class);
@@ -159,12 +151,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                         intent.putExtra("view", "arroces");
                         startActivity(intent);
                         break;
+
                     case 4:
+
+                        String dir = dir = "Ctra. NÃ­jar-San JosÃ©, 22";
+
                         intent = new Intent(MainActivity.this, MainActivity2Activity.class);
-                        // passing array index
-                        intent.putExtra("id", position);
-                        intent.putExtra("view", "arroces");
-                        startActivity( intent);
+
+                        intent= new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + dir));
+                        //lanzar el intent
+                        startActivity(intent);
                         break;
 
                 }
@@ -186,8 +182,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 this,
                 drawerLayout,
                 R.drawable.ic_action_drawer,
-                R.string.abierto,
-                R.string.cerrado) {
+                R.string.drawer_open,
+                R.string.drawer_close) {
 
             /**
              * METODOS PARA MANEJAR LOS EVENTOS DE APERTURA Y CIERRE DEL NAVIGATION DRAWER
@@ -197,6 +193,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 super.onDrawerClosed(drawerView);
                 ActivityCompat.invalidateOptionsMenu(MainActivity.this);
                 //actionBarActivity.setSubtitle(tituloSec);
+                drawerToggle.setDrawerIndicatorEnabled(true);
             }
 
             @Override
@@ -206,17 +203,24 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 //actionBarActivity.setSubtitle(" ");
             }
         };
-        //Seteamos la escucha
-       // drawerLayout.setDrawerListener(drawerToggle);
-        actionBarActivity.setDisplayHomeAsUpEnabled(true);
-        actionBarActivity.setHomeButtonEnabled(true);
 
+        drawerLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                drawerToggle.syncState();
+            }
+        });
+        //Seteamos la escucha
+        drawerLayout.setDrawerListener(drawerToggle);
+       actionBarActivity.setDisplayHomeAsUpEnabled(true);
+        actionBarActivity.setHomeButtonEnabled(true);
+        drawerToggle.setDrawerIndicatorEnabled(true);
 
         /**
          *  TABS SWIPE .. View pager.
          */
 
-             adapter = new AdapterViewPager( getSupportFragmentManager());
+            adapter = new AdapterViewPager( getSupportFragmentManager());
             mViewPager = (ViewPager) findViewById(R.id.pager1);
 
             mViewPager.setAdapter(adapter);
@@ -226,9 +230,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             public void onPageSelected(int position) {
                 actionBarActivity.setSelectedNavigationItem(position);
 
-                // Vaya cambiando el hint de Buscar, por el nombre de la tab seleccionada.
+                // Cambiar el hint de Buscar, por el nombre de la tab seleccionada.
                 mSearchView.setQueryHint("Buscar " + adapter.getPageTitle(position));
-
 
             }
         });
@@ -240,30 +243,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             actionBarActivity.addTab(actionBarActivity.newTab()
                             .setText(adapter.getPageTitle(i))
                             .setTabListener(this));
-
-
+        }
         }
 
 
-
-           /* actionBarActivity.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-            ActionBar.Tab tab = actionBarActivity.newTab().setText(adapter.getPageTitle(0)).setTabListener(this);
-            actionBarActivity.addTab(tab);
-
-            tab = actionBarActivity.newTab().setText(adapter.getPageTitle(1)).setTabListener(this);
-            actionBarActivity.addTab(tab);
-
-            tab = actionBarActivity.newTab().setText(adapter.getPageTitle(2)).setTabListener(this);
-            actionBarActivity.addTab(tab);
-
-            tab = actionBarActivity.newTab().setText(adapter.getPageTitle(3)).setTabListener(this);
-            actionBarActivity.addTab(tab);*/
-
-
-
-
-    }
 
 
     /**
@@ -327,8 +310,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         return super.onOptionsItemSelected(item);
     }
 
-
-
     /**
      *    METODOS DE NAVIGATION DRAWER
      */
@@ -344,8 +325,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    @Override //Ociltar los iconos cuando se abre el menu
+    @Override //Ocultar los iconos cuando se abre el menu
     public boolean onPrepareOptionsMenu(Menu menu) {
+
+        boolean menuAbie = drawerLayout.isDrawerOpen(listView);
+
+        if(menuAbie) {
+            menu.findItem(R.id.buscar).setVisible(false);
+            menu.findItem(R.id.compartir).setVisible(false);
+        }else{
+            menu.findItem(R.id.buscar).setVisible(true);
+            menu.findItem(R.id.compartir).setVisible(true);}
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -363,7 +354,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     public void onPageSelected(int i) {
 
-        getSupportActionBar().setSelectedNavigationItem(i);
+       // getSupportActionBar().setSelectedNavigationItem(i);
     }
 
     @Override
@@ -390,15 +381,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     }
 
+
+    /**
+     * METODOS DEL SEARCH VIEW
+     *
+     */
+
+    //Devulve la palabra completa a buscar
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
 
+    //Devuelve cada caracter
     @Override
     public boolean onQueryTextChange(String newText) {
-
-
         return false;
     }
 }

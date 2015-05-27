@@ -13,7 +13,7 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.example.kevin.restauranteapp10.Adaptadores.AdapterGridView;
-import com.example.kevin.restauranteapp10.MainActivity2Activity;
+import com.example.kevin.restauranteapp10.Activitys_NavDrawer.MainActivity2Activity;
 import com.example.kevin.restauranteapp10.R;
 
 import java.util.ArrayList;
